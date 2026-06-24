@@ -153,7 +153,7 @@ export default function Home() {
             </div>
           </Card>
 
-          <Card title="2. 预览与列映射">
+          <Card title="2. 预览与行列选择">
             {!table ? (
               <div className="text-sm text-zinc-600 dark:text-zinc-400">请先上传 Excel。</div>
             ) : (
@@ -180,7 +180,7 @@ export default function Home() {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <div className="text-xs font-medium text-zinc-700 dark:text-zinc-200">班级数（输出从 1 开始）</div>
+                    <div className="text-xs font-medium text-zinc-700 dark:text-zinc-200">分后的班级数</div>
                     <input
                       type="number"
                       value={params.classNum}
@@ -193,7 +193,7 @@ export default function Home() {
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div className="flex flex-col gap-2">
-                    <div className="text-xs font-medium text-zinc-700 dark:text-zinc-200">起始行号（Excel 行号，从 2 开始，含）</div>
+                    <div className="text-xs font-medium text-zinc-700 dark:text-zinc-200">起始行号（Excel 行号）</div>
                     <input
                       type="number"
                       value={mapping.rowStart1}
@@ -207,7 +207,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <div className="text-xs font-medium text-zinc-700 dark:text-zinc-200">结束行号（Excel 行号，从 2 开始，含）</div>
+                    <div className="text-xs font-medium text-zinc-700 dark:text-zinc-200">结束行号（Excel 行号）</div>
                     <input
                       type="number"
                       value={mapping.rowEnd1}
@@ -229,7 +229,7 @@ export default function Home() {
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div className="flex flex-col gap-2">
-                    <div className="text-xs font-medium text-zinc-700 dark:text-zinc-200">0/1 标签列（可选）</div>
+                    <div className="text-xs font-medium text-zinc-700 dark:text-zinc-200">0/1 标签列</div>
                     <ColumnChecklist
                       columns={table.columns.filter((c) => c !== mapping.nameColumn && !mapping.subjectColumns.includes(c))}
                       value={mapping.labelColumns01}
@@ -237,7 +237,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <div className="text-xs font-medium text-zinc-700 dark:text-zinc-200">枚举标签列（自动展开，空白不展开）</div>
+                    <div className="text-xs font-medium text-zinc-700 dark:text-zinc-200">OneHot 类别标签列（空白不展开）</div>
                     <ColumnChecklist
                       columns={table.columns.filter((c) => c !== mapping.nameColumn && !mapping.subjectColumns.includes(c) && !mapping.labelColumns01.includes(c))}
                       value={mapping.enumLabelColumns}
@@ -248,7 +248,7 @@ export default function Home() {
 
                 <div className="flex flex-col gap-3">
                   <div className="text-xs font-medium text-zinc-700 dark:text-zinc-200">
-                    TopK / 后K（每门学科单独输入 K 列表；正数=前K，负数=后K；包含并列）
+                    前K名 / 后K名（每门学科单独输入 K 列表；正数=前K，负数=后K；包含并列）
                   </div>
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                     {mapping.subjectColumns.map((subject) => {
@@ -284,7 +284,7 @@ export default function Home() {
                     }}
                     className="h-10 rounded-lg bg-zinc-900 px-4 text-sm font-medium text-white shadow-sm disabled:cursor-not-allowed disabled:bg-zinc-300 dark:bg-zinc-100 dark:text-zinc-900 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-400"
                   >
-                    生成数据集（用于约束与优化）
+                    导入数据集
                   </button>
                   {prepared ? (
                     <div className="text-xs text-zinc-600 dark:text-zinc-400">
@@ -296,12 +296,12 @@ export default function Home() {
             )}
           </Card>
 
-          <Card title="3. 约束导入（粘贴文本）">
+          <Card title="3. 特殊硬性约束">
             <div className="flex flex-col gap-3">
               <textarea
                 value={constraintsText}
                 onChange={(e) => setConstraintsText(e.target.value)}
-                placeholder={"支持三种格式：\n1) 张三,李四,不在同班\n2) 张三,李四,必须同班\n3) 张三,固定班级,3"}
+                placeholder={"支持三种格式（使用英文逗号分隔）：\n1) 张三,李四,不在同班\n2) 张三,李四,必须同班\n3) 张三,固定班级,3"}
                 className="h-48 w-full resize-none rounded-lg border border-zinc-200 bg-white p-3 text-xs leading-relaxed shadow-sm dark:border-zinc-800 dark:bg-zinc-950"
               />
               <div className="flex flex-wrap items-center gap-2">
@@ -344,7 +344,7 @@ export default function Home() {
                 {constraints.length > 0 ? <span className="text-xs text-zinc-600 dark:text-zinc-400">已生成 {constraints.length} 条约束</span> : null}
               </div>
 
-              {!prepared ? <div className="text-xs text-zinc-500">请先在上一步生成数据集（确保姓名列已确定）。</div> : null}
+              {!prepared ? <div className="text-xs text-zinc-500">请先在上一步导入数据集（确保姓名列已确定）；先按“解析”（无事发生是正常的），再按“生成约束”；核对约束个数是否正确。</div> : null}
 
               {prepared && nameIndex && constraintDrafts.length > 0 ? (
                 <div className="flex flex-col gap-2">
