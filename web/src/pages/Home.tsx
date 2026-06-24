@@ -118,7 +118,7 @@ export default function Home() {
     <div className="min-h-dvh bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
       <div className="mx-auto max-w-6xl px-4 py-10">
         <header className="mb-8 flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight">分班程序（纯前端）</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">分班程序</h1>
           <p className="text-sm text-zinc-600 dark:text-zinc-400">上传 Excel → 配置列与约束 → 模拟退火 → 导出结果 Excel</p>
         </header>
 
